@@ -28,7 +28,7 @@ public class DatabaseConnectivity {
 
     public static Connection getConnection() throws IOException, InterruptedException {
         try {
-                String url = "jdbc:mysql://localhost:3306/db_materai";
+                String url = "jdbc:mysql://localhost:3306/kiriman_materai";
                 String user = "root";
                 String password = "";
                 DriverManager.registerDriver(new Driver());

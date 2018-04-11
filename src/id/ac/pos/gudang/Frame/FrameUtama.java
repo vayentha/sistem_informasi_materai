@@ -5,9 +5,13 @@
  */
 package id.ac.pos.gudang.Frame;
 
-import id.ac.pos.gudang.Panel.panelContoh;
+import id.ac.pos.gudang.Panel.PanelIsiKiriman;
+import id.ac.pos.gudang.Panel.PanelKiriman;
+import id.ac.pos.gudang.Panel.PanelProduk;
 import java.awt.CardLayout;
+import java.awt.Component;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 /**
  *
@@ -20,7 +24,16 @@ public class FrameUtama extends javax.swing.JFrame {
      */
     public FrameUtama() {
         initComponents();
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        Materai.removeAll();
+        Materai.repaint();
+        Materai.revalidate();
+        CardLayout cardLayout = (CardLayout) Materai.getLayout();
+        PanelProduk produk = new PanelProduk("MTR");
+        Materai.add("Panel Pemesanan", produk);
+        Materai.repaint();
+        Materai.revalidate();
     }
 
     /**
@@ -33,47 +46,98 @@ public class FrameUtama extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        buttonKecil = new javax.swing.JButton();
+        panelMenu = new javax.swing.JPanel();
+        buttonKelolaProduk = new javax.swing.JButton();
+        buttonLaporan = new javax.swing.JButton();
+        buttonKiriman1 = new javax.swing.JButton();
         panelUtama = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        tabbedPaneProduk = new javax.swing.JTabbedPane();
+        Materai = new javax.swing.JPanel();
+        Sampul = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        buttonKecil.setText("jButton1");
-        buttonKecil.addActionListener(new java.awt.event.ActionListener() {
+        buttonKelolaProduk.setText("KELOLA PRODUK");
+        buttonKelolaProduk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonKecilActionPerformed(evt);
+                buttonKelolaProdukActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonKecil, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+        buttonLaporan.setText("LAPORAN");
+        buttonLaporan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLaporanActionPerformed(evt);
+            }
+        });
+
+        buttonKiriman1.setText("KIRIMAN");
+        buttonKiriman1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonKiriman1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
+        panelMenu.setLayout(panelMenuLayout);
+        panelMenuLayout.setHorizontalGroup(
+            panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMenuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonKelolaProduk, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(buttonLaporan, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(buttonKiriman1, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(buttonKecil, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 321, Short.MAX_VALUE))
+        panelMenuLayout.setVerticalGroup(
+            panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMenuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(buttonKelolaProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonKiriman1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonLaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(165, Short.MAX_VALUE))
         );
 
         panelUtama.setLayout(new java.awt.CardLayout());
+
+        jPanel2.setLayout(new java.awt.CardLayout());
+
+        tabbedPaneProduk.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabbedPaneProdukMouseClicked(evt);
+            }
+        });
+
+        Materai.setLayout(new java.awt.CardLayout());
+        tabbedPaneProduk.addTab("Materai", Materai);
+
+        Sampul.setLayout(new java.awt.CardLayout());
+        tabbedPaneProduk.addTab("Sampul", Sampul);
+
+        jPanel2.add(tabbedPaneProduk, "card2");
+
+        panelUtama.add(jPanel2, "card2");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelUtama, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelUtama, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelUtama, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelMenu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelUtama, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -90,17 +154,57 @@ public class FrameUtama extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonKecilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonKecilActionPerformed
+    private void buttonLaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLaporanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonLaporanActionPerformed
+
+    private void buttonKelolaProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonKelolaProdukActionPerformed
+        // TODO add your handling code here:
+        panelUtama.removeAll();
+        panelUtama.repaint();
+        panelUtama.revalidate();
+        panelUtama.add(jPanel2);
+        panelUtama.repaint();
+        panelUtama.revalidate();
+    }//GEN-LAST:event_buttonKelolaProdukActionPerformed
+
+    private void buttonKiriman1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonKiriman1ActionPerformed
         // TODO add your handling code here:
         panelUtama.removeAll();
         panelUtama.repaint();
         panelUtama.revalidate();
         CardLayout cardLayout = (CardLayout) panelUtama.getLayout();
-        panelContoh contoh = new panelContoh();
-        panelUtama.add("Panel Pemesanan", contoh);
+        PanelKiriman panelkiriman = new PanelKiriman();
+        panelUtama.add("Panel Kiriman", panelkiriman);
         panelUtama.repaint();
         panelUtama.revalidate();
-    }//GEN-LAST:event_buttonKecilActionPerformed
+    }//GEN-LAST:event_buttonKiriman1ActionPerformed
+
+    private void tabbedPaneProdukMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedPaneProdukMouseClicked
+        // TODO add your handling code here:
+        String jenis;
+        if (tabbedPaneProduk.getSelectedIndex() == 0) {
+            Materai.removeAll();
+            Materai.repaint();
+            Materai.revalidate();
+            CardLayout cardLayout = (CardLayout) Materai.getLayout();
+            jenis= "MTR";
+            PanelProduk produk = new PanelProduk(jenis);
+            Materai.add("Panel Pemesanan", produk);
+            Materai.repaint();
+            Materai.revalidate();
+        } else if (tabbedPaneProduk.getSelectedIndex() == 1) {
+            Sampul.removeAll();
+            Sampul.repaint();
+            Sampul.revalidate();
+            CardLayout cardLayout = (CardLayout) Sampul.getLayout();
+            jenis = "SMP";
+            PanelProduk produk = new PanelProduk(jenis);
+            Sampul.add("Panel Pemesanan", produk);
+            Sampul.repaint();
+            Sampul.revalidate();
+        }
+    }//GEN-LAST:event_tabbedPaneProdukMouseClicked
 
     /**
      * @param args the command line arguments
@@ -112,20 +216,10 @@ public class FrameUtama extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrameUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrameUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrameUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrameUtama.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            com.jtattoo.plaf.noire.NoireLookAndFeel.setTheme("Large-Font", "Java Swing", "");
+            UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         //</editor-fold>
 
@@ -138,9 +232,15 @@ public class FrameUtama extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonKecil;
+    private javax.swing.JPanel Materai;
+    private javax.swing.JPanel Sampul;
+    private javax.swing.JButton buttonKelolaProduk;
+    private javax.swing.JButton buttonKiriman1;
+    private javax.swing.JButton buttonLaporan;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel panelMenu;
     private javax.swing.JPanel panelUtama;
+    private javax.swing.JTabbedPane tabbedPaneProduk;
     // End of variables declaration//GEN-END:variables
 }

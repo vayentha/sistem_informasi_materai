@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/reyha/OneDrive/Desktop/sistem_informasi_materai/src/id/ac/pos/gudang/DAO/LoginDAO.java</file>
-            <file>file:/C:/Users/reyha/OneDrive/Desktop/sistem_informasi_materai/src/id/ac/pos/gudang/Frame/FrameLogin.java</file>
-            <file>file:/C:/Users/reyha/OneDrive/Desktop/sistem_informasi_materai/src/id/ac/pos/gudang/Frame/FrameUtama.java</file>
-            <file>file:/C:/Users/reyha/OneDrive/Desktop/sistem_informasi_materai/src/id/ac/pos/gudang/Panel/panelIsi.java</file>
-            <file>file:/C:/Users/reyha/OneDrive/Desktop/sistem_informasi_materai/src/id/ac/pos/gudang/Panel/panelContoh.java</file>
+            <file>file:/C:/Users/Firman/Documents/NetBeansProjects/sistem_informasi_materai-master/src/id/ac/pos/gudang/Panel/PanelIsiKiriman.java</file>
+            <file>file:/C:/Users/Firman/Documents/NetBeansProjects/sistem_informasi_materai-master/src/id/ac/pos/gudang/Panel/PanelKiriman.java</file>
+            <file>file:/C:/Users/Firman/Documents/NetBeansProjects/sistem_informasi_materai-master/src/id/ac/pos/gudang/Dialog/DialogTambahSampul.java</file>
+            <file>file:/C:/Users/Firman/Documents/NetBeansProjects/sistem_informasi_materai-master/src/id/ac/pos/gudang/Panel/PanelProduk.java</file>
+            <file>file:/C:/Users/Firman/Documents/NetBeansProjects/sistem_informasi_materai-master/src/id/ac/pos/gudang/Dialog/DialogTambahMaterai.java</file>
+            <file>file:/C:/Users/Firman/Documents/NetBeansProjects/sistem_informasi_materai-master/src/id/ac/pos/gudang/Frame/FrameUtama.java</file>
         </group>
     </open-files>
 </project-private>
