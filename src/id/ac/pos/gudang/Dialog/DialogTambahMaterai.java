@@ -5,11 +5,23 @@
  */
 package id.ac.pos.gudang.Dialog;
 
+import id.ac.pos.gudang.DAO.KirimanDAO;
+import id.ac.pos.gudang.DAOImpl.KirimanDAOImpl;
 import id.ac.pos.gudang.Frame.FrameUtama;
+import id.ac.pos.gudang.entity.Kiriman;
+import id.ac.pos.gudang.entity.Produk;
 import java.awt.event.KeyEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
@@ -18,25 +30,47 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
  * @author Firman
  */
 public class DialogTambahMaterai extends javax.swing.JDialog {
+
     String jenis;
+    KirimanDAO kirimanDAO = new KirimanDAOImpl();
+    Vector vectorProduk = new Vector();
+
     /**
      * Creates new form DialogTambahMaterai
      */
     public DialogTambahMaterai(java.awt.Frame parent, boolean modal) {
-        
+
     }
 
     public DialogTambahMaterai(FrameUtama frameUtama, boolean b, String jenis) {
         super(frameUtama, b);
         initComponents();
-        AutoCompleteDecorator.decorate(fieldKopur);
-        Vector kopur = new Vector();
-        kopur.add("- Pilih Kopur -");
-        kopur.add("3000");
-        kopur.add("6000");
-        fieldKopur.setModel(new DefaultComboBoxModel(kopur));
+
         this.jenis = jenis;
+
         this.setLocationRelativeTo(null);
+        AutoCompleteDecorator.decorate(fieldNamaProduk);
+
+        ArrayList<Produk> arrayProduk = kirimanDAO.getNamaProduk(jenis);
+
+        vectorProduk.add("- Pilih Nama Produk -");
+
+        for (int i = 0; i < arrayProduk.size(); i++) {
+            vectorProduk.add(arrayProduk.get(i).getNama_produk());
+        }
+
+        fieldNamaProduk.setModel(new DefaultComboBoxModel(vectorProduk));
+
+        tableMaterai.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{},
+                new String[]{
+                    "G14", "Tanggal", "No Seal", "KTG", "No Dus", "Nama Kantor", "Benda", "Kopur", "Keping", "Besar Uang", "No KTG"
+                }));
+
+        Date ys = new Date();
+        datePilihTanggal.setDate(ys);
+        buttonHapus.setEnabled(false);
+        buttonSimpan.setEnabled(false);
+        buttonBatal.setEnabled(false);
     }
 
     private String hilangkan_titik(String text_titik) {
@@ -127,15 +161,18 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
         fieldNoDus.setEditable(true);
         fieldKTG.setText("");
         fieldKTG.setEditable(true);
+        fieldNamaProduk.setSelectedIndex(0);
+        fieldNamaProduk.setEnabled(true);
         fieldNamaKantor.setText("");
         fieldNamaKantor.setEditable(true);
+        fieldKopur.setText("");
+        fieldKopur.setEditable(true);
         fieldKeping.setText("");
         fieldKeping.setEditable(true);
+        fieldBesarUang.setText("");
         fieldNoKTG.setText("");
         fieldNoKTG.setEditable(true);
-        fieldKopur.setSelectedIndex(0);
-        fieldKopur.setEnabled(true);
-        fieldBesarUang.setText("");
+
         buttonSimpan.setEnabled(false);
         buttonBatal.setEnabled(false);
     }
@@ -166,22 +203,24 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
         fieldNamaKantor = new javax.swing.JTextField();
         fieldKeping = new javax.swing.JTextField();
         fieldBesarUang = new javax.swing.JTextField();
-        fieldNoKTG = new javax.swing.JTextField();
-        buttonTambah = new javax.swing.JToggleButton();
-        buttonReset = new javax.swing.JToggleButton();
-        buttonHapus = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableMaterai = new javax.swing.JTable();
-        fieldBenda = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         datePilihTanggal = new com.toedter.calendar.JDateChooser();
-        jLabel12 = new javax.swing.JLabel();
         buttonSimpan = new javax.swing.JButton();
         buttonBatal = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        fieldKopur = new javax.swing.JComboBox<>();
+        fieldNamaProduk = new javax.swing.JComboBox<>();
+        fieldKopur = new javax.swing.JTextField();
+        buttonTambah = new javax.swing.JButton();
+        buttonReset = new javax.swing.JButton();
+        buttonHapus = new javax.swing.JButton();
+        fieldNoKTG = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Form Kiriman Materai"));
+        jPanel1.setPreferredSize(new java.awt.Dimension(915, 530));
 
         jLabel1.setText("G14");
 
@@ -196,64 +235,19 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
         jLabel6.setText("Benda");
 
         jLabel9.setText("Keping");
+        jLabel9.setPreferredSize(new java.awt.Dimension(63, 14));
 
         jLabel10.setText("Besar Uang");
 
         jLabel11.setText("No KTG");
 
-        fieldG14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldG14ActionPerformed(evt);
-            }
-        });
-
-        fieldKeping.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldKepingActionPerformed(evt);
-            }
-        });
         fieldKeping.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                fieldKepingKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 fieldKepingKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                fieldKepingKeyTyped(evt);
             }
         });
 
         fieldBesarUang.setEditable(false);
-        fieldBesarUang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldBesarUangActionPerformed(evt);
-            }
-        });
-        fieldBesarUang.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                fieldBesarUangKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                fieldBesarUangKeyTyped(evt);
-            }
-        });
-
-        buttonTambah.setText("Tambah");
-
-        buttonReset.setText("Reset");
-        buttonReset.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonResetActionPerformed(evt);
-            }
-        });
-
-        buttonHapus.setText("Hapus");
-        buttonHapus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonHapusActionPerformed(evt);
-            }
-        });
 
         tableMaterai.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -268,18 +262,19 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tableMaterai);
 
-        fieldBenda.setText("Materai");
-        fieldBenda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldBendaActionPerformed(evt);
-            }
-        });
-
         jLabel7.setText("Tanggal");
 
-        jLabel12.setText("Form Kiriman Materai");
+        datePilihTanggal.setDateFormatString("yyyy-MM-dd");
+        datePilihTanggal.setMaxSelectableDate(new java.util.Date(253370743275000L));
+        datePilihTanggal.setMinSelectableDate(new java.util.Date(-62135791125000L));
 
         buttonSimpan.setText("Simpan");
+        buttonSimpan.setPreferredSize(new java.awt.Dimension(75, 23));
+        buttonSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSimpanActionPerformed(evt);
+            }
+        });
 
         buttonBatal.setText("Batal");
         buttonBatal.addActionListener(new java.awt.event.ActionListener() {
@@ -290,9 +285,34 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
 
         jLabel8.setText("Kopur");
 
-        fieldKopur.addActionListener(new java.awt.event.ActionListener() {
+        fieldNamaProduk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldKopurActionPerformed(evt);
+                fieldNamaProdukActionPerformed(evt);
+            }
+        });
+
+        fieldKopur.setEditable(false);
+
+        buttonTambah.setText("Tambah");
+        buttonTambah.setPreferredSize(new java.awt.Dimension(75, 23));
+        buttonTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonTambahActionPerformed(evt);
+            }
+        });
+
+        buttonReset.setText("Reset");
+        buttonReset.setPreferredSize(new java.awt.Dimension(75, 23));
+        buttonReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonResetActionPerformed(evt);
+            }
+        });
+
+        buttonHapus.setText("Hapus");
+        buttonHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonHapusActionPerformed(evt);
             }
         });
 
@@ -304,86 +324,80 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(fieldKTG))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(fieldNoSeal))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(fieldG14, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fieldBenda, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(fieldNoDus, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(datePilihTanggal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(buttonTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonReset, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fieldNamaKantor))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(fieldKopur, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(fieldBesarUang))
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                    .addComponent(buttonTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(18, 18, 18)
+                                                    .addComponent(buttonReset, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                    .addComponent(fieldKopur, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(26, 26, 26)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(18, 18, 18)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(datePilihTanggal, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                                            .addComponent(fieldNoDus)
+                                            .addComponent(fieldNamaProduk, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(fieldKeping)
+                                            .addComponent(fieldNoKTG)))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(fieldBesarUang, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel11)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(fieldNoKTG))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(fieldNamaKantor))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(buttonSimpan)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(buttonBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(fieldKeping, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                                        .addComponent(buttonSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(buttonHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(buttonBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(fieldKTG))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(fieldNoSeal))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(fieldG14, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(453, 453, 453))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel12)
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fieldG14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7))
-                    .addComponent(datePilihTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(fieldG14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(datePilihTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -395,37 +409,37 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fieldKTG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldBenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldNamaProduk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fieldNamaKantor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldKopur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldBesarUang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldNoKTG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonTambah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonBatal)
+                            .addComponent(buttonHapus)))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fieldKopur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fieldKeping, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fieldNoKTG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fieldBesarUang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonTambah)
-                    .addComponent(buttonReset)
-                    .addComponent(buttonHapus))
-                .addGap(11, 11, 11)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonSimpan)
-                    .addComponent(buttonBatal))
+                        .addComponent(fieldKeping, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -433,56 +447,15 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void fieldKopurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldKopurActionPerformed
-        // TODO add your handling code here:
-       
-            String keping = fieldKeping.getText();
-            Object kopur = fieldKopur.getSelectedItem();
-
-            if (keping.compareTo("") != 0 && kopur != "- Pilih Kopur -") {
-                String besar_uang_string = hilangkan_titik(Long.toString(Long.parseLong(keping) * Long.parseLong((String) kopur)));
-                String besar_uang_hasil = format_titik(besar_uang_string);
-                fieldBesarUang.setText(besar_uang_hasil);
-            } else {
-                fieldBesarUang.setText("");
-            }
-    }//GEN-LAST:event_fieldKopurActionPerformed
-
-    private void fieldKepingKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldKepingKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldKepingKeyTyped
-
-    private void fieldBendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldBendaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldBendaActionPerformed
-
-    private void fieldBesarUangKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldBesarUangKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldBesarUangKeyTyped
-
-    private void fieldBesarUangKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldBesarUangKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldBesarUangKeyReleased
-
-    private void fieldKepingKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldKepingKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldKepingKeyPressed
 
     private void fieldKepingKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldKepingKeyReleased
         // TODO add your handling code here:
@@ -492,11 +465,11 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
                 || (karakter == KeyEvent.VK_DELETE)
                 || (karakter == KeyEvent.VK_ENTER)))) {
 
-            String keping = fieldKeping.getText();
-            Object kopur = fieldKopur.getSelectedItem();
+            if (fieldKeping.getText().compareTo("") != 0 && fieldKopur.getText().compareTo("") != 0) {
+                Long keping = Long.parseLong(fieldKeping.getText());
+                Long kopur = Long.parseLong(fieldKopur.getText());
 
-            if (keping.compareTo("") != 0 && kopur != "- Pilih Kopur -") {
-                String besar_uang_string = hilangkan_titik(Long.toString(Long.parseLong(keping) * Long.parseLong((String) kopur)));
+                String besar_uang_string = hilangkan_titik(Long.toString(keping * kopur));
                 String besar_uang_hasil = format_titik(besar_uang_string);
                 fieldBesarUang.setText(besar_uang_hasil);
             } else {
@@ -507,47 +480,217 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_fieldKepingKeyReleased
 
-    private void fieldBesarUangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldBesarUangActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldBesarUangActionPerformed
-
-    private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
-        // TODO add your handling code here:
-//        int baris = tableMaterai.getRowCount();
-//        if (baris > 0) {
-//            fieldKopur.setSelectedIndex(0);
-//            fieldBesarUang.setText("");
-//        } else {
-            fieldG14.setText("");
-            Date ys = new Date();
-            datePilihTanggal.setDate(ys);
-            fieldNoSeal.setText("");
-            fieldNoDus.setText("");
-            fieldKTG.setText("");
-            fieldNamaKantor.setText("");
-            fieldKeping.setText("");
-            fieldKopur.setSelectedIndex(0);
-            fieldBesarUang.setText("");
-            fieldNoKTG.setText("");
-//        }
-    }//GEN-LAST:event_buttonResetActionPerformed
-
-    private void fieldG14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldG14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldG14ActionPerformed
-
     private void buttonBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBatalActionPerformed
         // TODO add your handling code here:
         reset_simpan();
     }//GEN-LAST:event_buttonBatalActionPerformed
 
+    private void fieldNamaProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNamaProdukActionPerformed
+        // TODO add your handling code here:
+        Object nama_produk = fieldNamaProduk.getSelectedItem();
+        if (nama_produk != "- Pilih Benda -") {
+            ArrayList<Produk> arrayProduk = kirimanDAO.getKopur(jenis, (String) nama_produk);
+
+            fieldKopur.setText(Long.toString(arrayProduk.get(0).getHarga_produk()));
+        } else {
+            fieldKopur.setText("");
+        }
+
+    }//GEN-LAST:event_fieldNamaProdukActionPerformed
+
+    private void buttonTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTambahActionPerformed
+        // TODO add your handling code here:
+        int baris = tableMaterai.getRowCount();
+        String G14 = fieldG14.getText();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date Tanggal = (java.util.Date) datePilihTanggal.getDate();
+
+        String NoSeal = fieldNoSeal.getText();
+        String KTG = fieldKTG.getText();
+        String NoDus = fieldNoDus.getText();
+        String NamaKantor = fieldNamaKantor.getText();
+        Object NamaProduk = fieldNamaProduk.getSelectedItem();
+        String Kopur = fieldKopur.getText();
+        String Keping = fieldKeping.getText();
+        String BesarUang = fieldBesarUang.getText();
+        String NoKTG = fieldNoKTG.getText();
+
+        if (G14.compareTo("") != 0) {
+            if (Tanggal != null) {
+                if (NoSeal.compareTo("") != 0) {
+                    if (KTG.compareTo("") != 0) {
+                        if (NoDus.compareTo("") != 0) {
+                            if (NamaKantor.compareTo("") != 0) {
+                                if (NamaProduk != "") {
+                                    if (Kopur.compareTo("") != 0) {
+                                        if (Keping.compareTo("") != 0) {
+                                            if (BesarUang.compareTo("") != 0) { 
+                                                if (NoKTG.compareTo("") != 0) {
+
+                                                    datePilihTanggal.setEnabled(true);
+
+                                                    DefaultTableModel dataModel = (DefaultTableModel) tableMaterai.getModel();
+                                                    List list = new ArrayList<>();
+                                                    tableMaterai.setAutoCreateColumnsFromModel(true);
+                                                    list.add(G14);
+                                                    list.add(dateFormat.format(Tanggal));
+                                                    list.add(NoSeal);
+                                                    list.add(KTG);
+                                                    list.add(NoDus);
+                                                    list.add(NamaKantor);
+                                                    list.add(NamaProduk);
+                                                    list.add(Kopur);
+                                                    list.add(Keping);
+                                                    list.add(BesarUang);
+                                                    list.add(NoKTG);
+                                                    dataModel.addRow(list.toArray());
+
+//                                                fieldNamaProduk.setSelectedIndex(0);
+//                                                fieldBesarUang.setText("");
+                                                    buttonSimpan.setEnabled(true);
+                                                    buttonBatal.setEnabled(true);
+                                                    buttonHapus.setEnabled(true);
+                                                } else {
+                                                    JOptionPane.showMessageDialog(null, "Silakan isi No Kantong terlebih dahulu!");
+                                                }
+                                            }
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Silakan isi Keping terlebih dahulu!");
+                                        }
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Silakan pilih Nama Produk terlebih dahulu!");
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Silakan isi Nama Kantor terlebih dahulu!");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Silakan isi No Dus terlebih dahulu!");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Silakan isi Kantong terlebih dahulu!");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Silakan isi No Seal terlebih dahulu!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Silakan isi Tanggal terlebih dahulu!");
+
+            }
+
+        }
+    }//GEN-LAST:event_buttonTambahActionPerformed
+
+    private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
+        // TODO add your handling code here:
+        fieldG14.setText("");
+        Date ys = new Date();
+        datePilihTanggal.setDate(ys);
+        fieldNoSeal.setText("");
+        fieldNoDus.setText("");
+        fieldKTG.setText("");
+        fieldNamaProduk.setSelectedIndex(0);
+        fieldNamaKantor.setText("");
+        fieldKeping.setText("");
+        fieldKopur.setText("");
+        fieldBesarUang.setText("");
+        fieldNoKTG.setText("");
+    }//GEN-LAST:event_buttonResetActionPerformed
+
     private void buttonHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonHapusActionPerformed
         // TODO add your handling code here:
+        String G14, Tanggal, NoSeal, NoDus, KTG, NamaProduk, NamaKantor, Kopur, Keping, BesarUang, NoKTG;
+        int baris_pilih = tableMaterai.getSelectedRow();
+        if (baris_pilih >= 0) {
+
+            int ok = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin akan "
+                    + "menghapus G14 : " + tableMaterai.getValueAt(baris_pilih, 0).toString()
+                    + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (ok == 0) {
+                DefaultTableModel model = (DefaultTableModel) tableMaterai.getModel();
+                model.removeRow(baris_pilih);
+
+                int baris = tableMaterai.getRowCount();
+                if (baris == 0) {
+                    buttonHapus.setEnabled(false);
+                    buttonSimpan.setEnabled(false);
+                    buttonBatal.setEnabled(false);
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Anda harus memilih dahulu produk yang akan dihapus!");
+        }
     }//GEN-LAST:event_buttonHapusActionPerformed
 
-    private void fieldKepingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldKepingActionPerformed
+    private void buttonSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimpanActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldKepingActionPerformed
+        String G14, Tanggal, NoSeal, NoDus, KTG, NamaProduk, NamaKantor, Kopur, Keping, BesarUang, NoKTG;
+        int pilih = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin ingin menyimpan?",
+                "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (pilih == JOptionPane.YES_OPTION) {
+            boolean sukses = false;
+            String kosong = null;
+            int stok_produk;
+            int i;
+            int banyak_baris = tableMaterai.getRowCount();
+
+//            java.util.Date tanggal_pengiriman = (java.util.Date) TanggalPengiriman.getDate();
+            for (i = 0; i < banyak_baris; i++) {
+                G14 = tableMaterai.getValueAt(0, 0).toString();
+                Tanggal = tableMaterai.getValueAt(0, 1).toString();
+                NoSeal = tableMaterai.getValueAt(0, 2).toString();
+                NoDus = tableMaterai.getValueAt(0, 4).toString();
+                KTG = tableMaterai.getValueAt(0, 3).toString();
+                NamaProduk = tableMaterai.getValueAt(0, 6).toString();
+                NamaKantor = tableMaterai.getValueAt(0, 5).toString();
+                Kopur = tableMaterai.getValueAt(0, 7).toString();
+                Keping = tableMaterai.getValueAt(0, 8).toString();
+                BesarUang = tableMaterai.getValueAt(0, 9).toString();
+                NoKTG = tableMaterai.getValueAt(0, 10).toString();
+
+                //hilangkan titik
+                String besar_uang_hasil = hilangkan_titik(BesarUang);
+
+                //autoincrement id_pengembalian
+                String id_produk = kirimanDAO.getIdProduk(NamaProduk);
+
+                Kiriman kiriman = new Kiriman();
+                kiriman.setG14(G14);
+                kiriman.setNo_seal(NoSeal);
+                kiriman.setJumlah_ktg(Integer.parseInt(KTG));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    kiriman.setTanggal(dateFormat.parse(Tanggal));
+                } catch (ParseException ex) {
+                    Logger.getLogger(DialogTambahMaterai.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                kiriman.setNo_dus(NoDus);
+                kiriman.setId_kantor(NamaKantor);
+                kiriman.setId_produk(id_produk);
+                kiriman.setJumlah(Integer.parseInt(Keping));
+                kiriman.setBesar_uang(Long.parseLong(besar_uang_hasil));
+                kiriman.setNo_ktg(NoKTG);
+                sukses = kirimanDAO.SimpanKiriman(kiriman);
+
+            }
+
+            if (sukses) {
+                JOptionPane.showMessageDialog(this, "Data berhasil ditambahkan");
+//                reset_simpan();
+            } else {
+                JOptionPane.showMessageDialog(this, "Data gagal ditambahkan");
+//                reset_simpan();
+            }
+
+            pilih = JOptionPane.showConfirmDialog(null, "Apakah anda akan menambahkan data lagi?",
+                    "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (pilih == JOptionPane.NO_OPTION) {
+                this.dispose();
+            }
+
+        }
+    }//GEN-LAST:event_buttonSimpanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -563,16 +706,24 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogTambahMaterai.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogTambahMaterai.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogTambahMaterai.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogTambahMaterai.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogTambahMaterai.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogTambahMaterai.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogTambahMaterai.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogTambahMaterai.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -593,25 +744,24 @@ public class DialogTambahMaterai extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonBatal;
-    private javax.swing.JToggleButton buttonHapus;
-    private javax.swing.JToggleButton buttonReset;
+    private javax.swing.JButton buttonHapus;
+    private javax.swing.JButton buttonReset;
     private javax.swing.JButton buttonSimpan;
-    private javax.swing.JToggleButton buttonTambah;
+    private javax.swing.JButton buttonTambah;
     private com.toedter.calendar.JDateChooser datePilihTanggal;
-    private javax.swing.JTextField fieldBenda;
     private javax.swing.JTextField fieldBesarUang;
     private javax.swing.JTextField fieldG14;
     private javax.swing.JTextField fieldKTG;
     private javax.swing.JTextField fieldKeping;
-    private javax.swing.JComboBox<String> fieldKopur;
+    private javax.swing.JTextField fieldKopur;
     private javax.swing.JTextField fieldNamaKantor;
+    private javax.swing.JComboBox<String> fieldNamaProduk;
     private javax.swing.JTextField fieldNoDus;
     private javax.swing.JTextField fieldNoKTG;
     private javax.swing.JTextField fieldNoSeal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

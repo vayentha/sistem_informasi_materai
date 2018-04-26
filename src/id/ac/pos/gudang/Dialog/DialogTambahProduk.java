@@ -116,6 +116,11 @@ public class DialogTambahProduk extends javax.swing.JDialog {
         });
 
         buttonReset.setText("Reset");
+        buttonReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -200,7 +205,7 @@ public class DialogTambahProduk extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Harga Produk tidak boleh Kosong");
             fieldHargaProduk.requestFocus();
             fieldHargaProduk.setEditable(true);
-        }else{
+        } else {
             int pilih = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin ingin "
                     + "menyimpan " + nama_produk
                     + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
@@ -209,9 +214,8 @@ public class DialogTambahProduk extends javax.swing.JDialog {
                 Produk produk = new Produk();
                 produk.setId_produk(id_produk);
                 produk.setNama_produk(nama_produk);
-                produk.setHarga_produk(Double.parseDouble(harga_produk) );
+                produk.setHarga_produk(Long.parseLong(harga_produk));
                 produk.setId_jenis_produk(this.jenis);
-
 
                 boolean sukses = produkDAO.tambahProduk(produk);
 
@@ -223,12 +227,18 @@ public class DialogTambahProduk extends javax.swing.JDialog {
                 }
             }
         }
-        
+
     }//GEN-LAST:event_buttonSimpanActionPerformed
-    
+
+    private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
+        // TODO add your handling code here:
+        fieldNamaProduk.setText("");
+        fieldHargaProduk.setText("");
+    }//GEN-LAST:event_buttonResetActionPerformed
+
     /**
-         * @param args the command line arguments
-         */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

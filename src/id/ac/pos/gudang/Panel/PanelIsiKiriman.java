@@ -42,7 +42,7 @@ public class PanelIsiKiriman extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder("Kiriman"));
+        setBorder(javax.swing.BorderFactory.createTitledBorder("Kiriman Produk"));
 
         jButton1.setText("Tambah");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -53,13 +53,13 @@ public class PanelIsiKiriman extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "G14", "No Seal", "KTG", "No Dus", "Nama Kantor", "Benda", "Kopur", "Keping", "Besar Uang", "No KTG"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
         jScrollPane1.setViewportView(jTable1);

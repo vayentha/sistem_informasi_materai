@@ -5,6 +5,7 @@
  */
 package id.ac.pos.gudang.Frame;
 
+import id.ac.pos.gudang.Dialog.DialogLaporan;
 import id.ac.pos.gudang.Panel.PanelIsiKiriman;
 import id.ac.pos.gudang.Panel.PanelKiriman;
 import id.ac.pos.gudang.Panel.PanelProduk;
@@ -49,12 +50,13 @@ public class FrameUtama extends javax.swing.JFrame {
         panelMenu = new javax.swing.JPanel();
         buttonKelolaProduk = new javax.swing.JButton();
         buttonLaporan = new javax.swing.JButton();
-        buttonKiriman1 = new javax.swing.JButton();
+        buttonKiriman = new javax.swing.JButton();
         panelUtama = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         tabbedPaneProduk = new javax.swing.JTabbedPane();
         Materai = new javax.swing.JPanel();
         Sampul = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,10 +74,10 @@ public class FrameUtama extends javax.swing.JFrame {
             }
         });
 
-        buttonKiriman1.setText("KIRIMAN");
-        buttonKiriman1.addActionListener(new java.awt.event.ActionListener() {
+        buttonKiriman.setText("KIRIMAN");
+        buttonKiriman.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonKiriman1ActionPerformed(evt);
+                buttonKirimanActionPerformed(evt);
             }
         });
 
@@ -86,9 +88,9 @@ public class FrameUtama extends javax.swing.JFrame {
             .addGroup(panelMenuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonKelolaProduk, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(buttonLaporan, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(buttonKiriman1, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                    .addComponent(buttonKelolaProduk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonLaporan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonKiriman, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelMenuLayout.setVerticalGroup(
@@ -97,10 +99,10 @@ public class FrameUtama extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(buttonKelolaProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonKiriman1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonKiriman, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonLaporan, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         panelUtama.setLayout(new java.awt.CardLayout());
@@ -123,21 +125,30 @@ public class FrameUtama extends javax.swing.JFrame {
 
         panelUtama.add(jPanel2, "card2");
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/pos_indonesia.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(panelMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelUtama, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addComponent(panelUtama, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMenu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelUtama, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -168,7 +179,7 @@ public class FrameUtama extends javax.swing.JFrame {
         panelUtama.revalidate();
     }//GEN-LAST:event_buttonKelolaProdukActionPerformed
 
-    private void buttonKiriman1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonKiriman1ActionPerformed
+    private void buttonKirimanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonKirimanActionPerformed
         // TODO add your handling code here:
         panelUtama.removeAll();
         panelUtama.repaint();
@@ -178,7 +189,7 @@ public class FrameUtama extends javax.swing.JFrame {
         panelUtama.add("Panel Kiriman", panelkiriman);
         panelUtama.repaint();
         panelUtama.revalidate();
-    }//GEN-LAST:event_buttonKiriman1ActionPerformed
+    }//GEN-LAST:event_buttonKirimanActionPerformed
 
     private void tabbedPaneProdukMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabbedPaneProdukMouseClicked
         // TODO add your handling code here:
@@ -235,8 +246,9 @@ public class FrameUtama extends javax.swing.JFrame {
     private javax.swing.JPanel Materai;
     private javax.swing.JPanel Sampul;
     private javax.swing.JButton buttonKelolaProduk;
-    private javax.swing.JButton buttonKiriman1;
+    private javax.swing.JButton buttonKiriman;
     private javax.swing.JButton buttonLaporan;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel panelMenu;

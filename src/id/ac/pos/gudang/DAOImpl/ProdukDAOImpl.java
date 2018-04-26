@@ -150,7 +150,7 @@ public class ProdukDAOImpl implements ProdukDAO {
                     Produk produk = new Produk();
                     produk.setId_produk(result.getString(1));
                     produk.setNama_produk(result.getString(2));
-                    produk.setHarga_produk(Double.parseDouble(result.getString(3)));
+                    produk.setHarga_produk(Long.parseLong(result.getString(3)));
 
                     Array_produk.add(produk);
 

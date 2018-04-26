@@ -12,7 +12,7 @@ package id.ac.pos.gudang.entity;
 public class Produk {
     String id_produk;
     String nama_produk;
-    double harga_produk;
+    long harga_produk;
     String id_jenis_produk;
 
     public String getId_produk() {
@@ -31,11 +31,11 @@ public class Produk {
         this.nama_produk = nama_produk;
     }
 
-    public double getHarga_produk() {
+    public long getHarga_produk() {
         return harga_produk;
     }
 
-    public void setHarga_produk(double harga_produk) {
+    public void setHarga_produk(long harga_produk) {
         this.harga_produk = harga_produk;
     }
 
