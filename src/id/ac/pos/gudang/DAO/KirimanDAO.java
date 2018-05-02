@@ -17,6 +17,7 @@ public interface KirimanDAO {
     ArrayList<Produk> getNamaProduk(String jenis);
     ArrayList<Produk> getKopur(String jenis, String nama_produk);
     boolean SimpanKiriman (Kiriman kiriman); 
+    ArrayList<Kiriman> tampilTabel(String jenis);
     String getIdProduk(String nama_produk);
     
     

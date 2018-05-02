@@ -17,6 +17,7 @@ public class DialogLaporan extends javax.swing.JDialog {
     public DialogLaporan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**

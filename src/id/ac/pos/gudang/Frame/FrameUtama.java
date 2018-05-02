@@ -167,6 +167,8 @@ public class FrameUtama extends javax.swing.JFrame {
 
     private void buttonLaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLaporanActionPerformed
         // TODO add your handling code here:
+        DialogLaporan dialogLaporan = new DialogLaporan(this, true);
+        dialogLaporan.setVisible(true);
     }//GEN-LAST:event_buttonLaporanActionPerformed
 
     private void buttonKelolaProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonKelolaProdukActionPerformed

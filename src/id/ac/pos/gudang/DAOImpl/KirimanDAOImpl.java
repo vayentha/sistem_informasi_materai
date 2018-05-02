@@ -220,6 +220,73 @@ public class KirimanDAOImpl implements KirimanDAO {
         return id_produk;
     }
 
+    @Override
+    public ArrayList<Kiriman> tampilTabel(String jenis) {
+        ArrayList<Kiriman> Array_kiriman = new ArrayList<>();
+        try {
+            conn = DatabaseConnectivity.getConnection();
+        } catch (IOException | InterruptedException ex) {
+            Logger.getLogger(KirimanDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String SELECT = "SELECT * FROM `tb_kiriman` inner join tb_produk on tb_kiriman.id_produk = tb_produk.id_produk WHERE tb_kiriman.id_produk LIKE '" + jenis + "%'";
+        state = null;
+
+        try {
+            state = conn.prepareStatement(SELECT);
+            result = state.executeQuery();
+            if (result != null) {
+
+                // selama result memiliki data
+                // return lebih dari 1 data
+                while (result.next()) {
+                    Kiriman kiriman = new Kiriman();
+                    
+                    kiriman.setG14(result.getString(1));
+                    kiriman.setTanggal(result.getDate(2));
+                    kiriman.setNo_seal(result.getString(3));
+                    kiriman.setJumlah_ktg(Integer.parseInt(result.getString(4)));
+                    kiriman.setNo_dus(result.getString(5));
+                    kiriman.setId_kantor(result.getString(6));
+                    kiriman.setJumlah(Integer.parseInt(result.getString(8)));
+                    kiriman.setBesar_uang(Long.parseLong(result.getString(9)));
+                    kiriman.setNo_ktg(result.getString(10));
+                    kiriman.setNama_produk(result.getString(12));
+                    kiriman.setKopur(result.getString(13));
+
+                    Array_kiriman.add(kiriman);
+
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(KirimanDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(KirimanDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (state != null) {
+                try {
+                    state.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(KirimanDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(KirimanDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return Array_kiriman;
+    }
+
 
     
 

@@ -22,6 +22,24 @@ public class Kiriman {
     int jumlah;
     long besar_uang;
     String no_ktg;
+    String nama_produk;
+    String kopur;
+
+    public String getKopur() {
+        return kopur;
+    }
+
+    public void setKopur(String kopur) {
+        this.kopur = kopur;
+    }
+
+    public String getNama_produk() {
+        return nama_produk;
+    }
+
+    public void setNama_produk(String nama_produk) {
+        this.nama_produk = nama_produk;
+    }
 
     public String getG14() {
         return g14;

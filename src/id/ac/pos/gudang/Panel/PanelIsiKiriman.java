@@ -5,9 +5,15 @@
  */
 package id.ac.pos.gudang.Panel;
 
+import id.ac.pos.gudang.DAO.KirimanDAO;
+import id.ac.pos.gudang.DAOImpl.KirimanDAOImpl;
 import id.ac.pos.gudang.Dialog.DialogTambahMaterai;
 import id.ac.pos.gudang.Dialog.DialogTambahSampul;
 import id.ac.pos.gudang.Frame.FrameUtama;
+import id.ac.pos.gudang.TabelModel.KirimanTM;
+import id.ac.pos.gudang.entity.Kiriman;
+import java.util.ArrayList;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -16,7 +22,8 @@ import id.ac.pos.gudang.Frame.FrameUtama;
 public class PanelIsiKiriman extends javax.swing.JPanel {
 
     String jenis;
-
+    TableRowSorter sorter;
+    KirimanDAO kirimanDAO = new KirimanDAOImpl();
     /**
      * Creates new form panelIsi
      */
@@ -26,7 +33,17 @@ public class PanelIsiKiriman extends javax.swing.JPanel {
 
     PanelIsiKiriman(String jenis) {
         initComponents();
+        
         this.jenis = jenis;
+        if(jenis.equals("MTR")){
+            ArrayList<Kiriman> Array_kiriman = kirimanDAO.tampilTabel(this.jenis);
+                
+            KirimanTM kirimanTM = new KirimanTM();
+            kirimanTM.setDataKiriman(Array_kiriman);
+            sorter = new TableRowSorter(kirimanTM);
+            tabelKiriman.setRowSorter(sorter);
+            tabelKiriman.setModel(kirimanTM);
+        }
     }
 
     /**
@@ -40,7 +57,7 @@ public class PanelIsiKiriman extends javax.swing.JPanel {
 
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelKiriman = new javax.swing.JTable();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Kiriman Produk"));
 
@@ -51,7 +68,7 @@ public class PanelIsiKiriman extends javax.swing.JPanel {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelKiriman.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -62,7 +79,7 @@ public class PanelIsiKiriman extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelKiriman);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -78,8 +95,7 @@ public class PanelIsiKiriman extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -100,6 +116,6 @@ public class PanelIsiKiriman extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabelKiriman;
     // End of variables declaration//GEN-END:variables
 }

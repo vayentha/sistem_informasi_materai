@@ -26,7 +26,6 @@ public class PanelProduk extends javax.swing.JPanel {
      * Creates new form PanelProduk
      */
     public PanelProduk() {
-        initComponents();
     }
 
     public PanelProduk(String jenis) {
